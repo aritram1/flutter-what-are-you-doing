@@ -1,0 +1,47 @@
+# Dart
+**/build/
+.dart_tool/
+.pub/
+/build/
+
+# Flutter/Dart dependencies
+**/pubspec.lock
+**/pubspec.yaml
+**/.dart_tool/
+
+# Flutter artifacts
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/AppFrameworkInfo.plist
+**/ios/Flutter/flutter_export_environment.sh
+
+# Android
+**/android/build/
+**/android/app/build/
+**/android/gradle/wrapper/gradle-wrapper.jar
+**/android/.gradle/
+**/android/app/src/main/flutter_assets/assets/
+
+# VS Code
+.vscode/
+
+# IntelliJ/Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Android
+**/build/
+**/gradle/
+**/local.properties
+
+# iOS
+**/ios/Pods/
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# macOS
+**/macos/Flutter/Flutter.xcworkspace/
+
+# Windows
+**/windows/Flutter/Generated.xcconfig
+**/windows/Flutter/flutter_export_environment.sh
