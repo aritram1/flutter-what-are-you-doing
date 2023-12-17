@@ -8,9 +8,9 @@ class CircleSelectorSection extends StatelessWidget {
   final String selectedValue;
   final void Function(String?)? onChanged;
 
-  Logger log = Logger();
+  final Logger log = Logger();
 
-  CircleSelectorSection({
+  CircleSelectorSection({super.key, 
     required this.section,
     required this.circles,
     required this.selectedValue,
@@ -27,16 +27,16 @@ class CircleSelectorSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
         color: Colors.grey[200],
       ),
-      padding: EdgeInsets.all(16.0),
-      margin: EdgeInsets.only(bottom: 16.0),
+      padding: const EdgeInsets.all(16.0),
+      margin: const EdgeInsets.only(bottom: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Section $section - $sectionName', // Display the section name
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           Column(
             children: circles!
                 .map(

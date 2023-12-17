@@ -5,27 +5,31 @@ import 'circle_selector_section.dart';
 import './data_generator.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String selectedCircle1 = '';
-  String selectedCircle2 = '';
-  String selectedCircle3 = '';
+  String selectedValue1 = '';
+  String selectedValue2 = '';
+  String selectedValue3 = '';
   String appName = 'What are you doing now?';
   String saveBtnName = 'Save to Salesforce';
   Logger log = Logger();
@@ -55,37 +59,37 @@ class _MyHomePageState extends State<MyHomePage> {
                         CircleSelectorSection(
                           section: 1,
                           circles: DataGenerator.getSection1Values(),
-                          selectedValue: selectedCircle1,
+                          selectedValue: selectedValue1,
                           onChanged: (String? value) {
                             setState(() {
-                              selectedCircle1 = value ?? '';
-                              selectedCircle2 = '';
-                              selectedCircle3 = '';
+                              selectedValue1 = value ?? '';
+                              selectedValue2 = '';
+                              selectedValue3 = '';
                               isSaveButtonVisible = false; // Reset button visibility
                             });
                           },
                         ),
-                        if (selectedCircle1.isNotEmpty)
+                        if (selectedValue1.isNotEmpty)
                           CircleSelectorSection(
                             section: 2,
-                            circles: DataGenerator.getSection2Values(selectedCircle1),
-                            selectedValue: selectedCircle2,
+                            circles: DataGenerator.getSection2Values(selectedValue1),
+                            selectedValue: selectedValue2,
                             onChanged: (String? value) {
                               setState(() {
-                                selectedCircle2 = value ?? '';
-                                selectedCircle3 = '';
+                                selectedValue2 = value ?? '';
+                                selectedValue3 = '';
                                 isSaveButtonVisible = false; // Reset button visibility
                               });
                             },
                           ),
-                        if (selectedCircle2.isNotEmpty)
+                        if (selectedValue2.isNotEmpty)
                           CircleSelectorSection(
                             section: 3,
-                            circles: DataGenerator.getSection3Values(selectedCircle1, selectedCircle2),
-                            selectedValue: selectedCircle3,
+                            circles: DataGenerator.getSection3Values(selectedValue1, selectedValue2),
+                            selectedValue: selectedValue3,
                             onChanged: (String? value) {
                               setState(() {
-                                selectedCircle3 = value ?? '';
+                                selectedValue3 = value ?? '';
                                 isSaveButtonVisible = true; // Show the button when section 3 is selected
                               });
                             },
@@ -97,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 isSaving = true; // Show loading spinner when save is clicked
                               });
 
-                              Map<String, dynamic> responseHandleSaveButtonclick = await handleSaveButtonclick(selectedCircle1, selectedCircle2, selectedCircle3);
+                              Map<String, dynamic> responseHandleSaveButtonclick = await handleSaveButtonclick(selectedValue1, selectedValue2, selectedValue3);
                               log.d('responseHandleSaveButtonclick => $responseHandleSaveButtonclick');
                               setState(() {
                                 isSaving = false; // Hide loading spinner when save response is received
@@ -123,11 +127,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<Map<String, dynamic>> handleSaveButtonclick(String val1, String val2, String val3) async {
     log.d('Inside handleSaveButtonclick : $val1 || $val2 || $val3');
-    Map<String, dynamic> response = await DataGenerator.saveToSalesforce(selectedCircle1, selectedCircle2, selectedCircle3);
+    Map<String, dynamic> response = await DataGenerator.saveToSalesforce(val1, val2, val3);
     setState(() {
-      selectedCircle1 = '';
-      selectedCircle2 = '';
-      selectedCircle3 = '';
+      selectedValue1 = '';
+      selectedValue2 = '';
+      selectedValue3 = '';
       isSaveButtonVisible = false; // Reset button visibility
     });
     return response;

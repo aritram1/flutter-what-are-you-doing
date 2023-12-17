@@ -70,7 +70,7 @@ class SalesforceUtil{
 
   // completed
   static Future<Map<String, String>> _insertToSalesforce(String objAPIName, List<Map<String, dynamic>> fieldNameValuePairs) async{
-    Map<String, String> _insertResponse = {};
+    Map<String, String> insertResponse = {};
     if(!isLoggedIn()) await loginToSalesforce();
     try{
       dynamic resp = await http.post(
@@ -82,22 +82,22 @@ class SalesforceUtil{
         final Map<String, dynamic> body = json.decode(resp.body);
         if(!body['hasErrors']){
           int count = body['results'].length;
-          _insertResponse['data'] = '$count $objAPIName records are inserted. ';
+          insertResponse['data'] = '$count $objAPIName records are inserted. ';
         }
         else{
-          _insertResponse['error'] = 'Error occurred in _insertToSalesforce! ';
+          insertResponse['error'] = 'Error occurred in _insertToSalesforce! ';
         }
       } 
       else {  
         print('Response code other than 200/201 detected ${resp.statusCode}');
-        _insertResponse['error'] = json.decode(resp.body).toString();
+        insertResponse['error'] = json.decode(resp.body).toString();
       }
     }
     catch(error){
-      _insertResponse['error'] = error.toString();
+      insertResponse['error'] = error.toString();
     }
-    print('Response from _insertResponse $_insertResponse');
-    return _insertResponse;
+    print('Response from _insertResponse $insertResponse');
+    return insertResponse;
   }
   
   
@@ -220,7 +220,7 @@ class SalesforceUtil{
   // private methods 
   
   static Future<Map<String, String>> _updateToSalesforce(String objAPIName, List<Map<String, dynamic>> fieldNameValuePairs) async{
-    Map<String, String> _updateResponse = {};
+    Map<String, String> updateResponse = {};
     if(!isLoggedIn()) await loginToSalesforce();
     try{
       dynamic resp = await http.patch(
@@ -241,27 +241,27 @@ class SalesforceUtil{
           }
         }
         if(errors == ''){
-          _updateResponse['data'] = '$successCount $objAPIName records are updated. ';
+          updateResponse['data'] = '$successCount $objAPIName records are updated. ';
         }
         else{
-          _updateResponse['error'] = errors;
+          updateResponse['error'] = errors;
         }
       } 
       else {  
         print('Response code other than 200/201 detected ${resp.statusCode}');
-        _updateResponse['error'] = json.decode(resp.body).toString();
+        updateResponse['error'] = json.decode(resp.body).toString();
       }
     }
     catch(error){
-      _updateResponse['error'] = error.toString();
+      updateResponse['error'] = error.toString();
     }
-    print('Response from _updateResponse $_updateResponse');
-    return _updateResponse;
+    print('Response from _updateResponse $updateResponse');
+    return updateResponse;
   }
   
   
   static Future<Map<String, String>> _deleteFromSalesforce(String objAPIName, List<String> recordIds, bool hardDelete) async{
-    Map<String, String> _deleteResponse = {};
+    Map<String, String> deleteResponse = {};
     if(!isLoggedIn()) await loginToSalesforce();
     try{
       dynamic resp = await http.delete(
@@ -282,10 +282,10 @@ class SalesforceUtil{
           }
         }
         if(errors == ''){
-          _deleteResponse['data'] = '$successCount $objAPIName records are deleted. ';
+          deleteResponse['data'] = '$successCount $objAPIName records are deleted. ';
         }
         else{
-          _deleteResponse['error'] = errors;
+          deleteResponse['error'] = errors;
         }
       }  
       else {  
@@ -294,16 +294,16 @@ class SalesforceUtil{
       }
     }
     catch(error){
-      _deleteResponse['error'] = error.toString();
+      deleteResponse['error'] = error.toString();
     }
-    print('Response from _deleteResponse $_deleteResponse');
-    return _deleteResponse;  
+    print('Response from _deleteResponse $deleteResponse');
+    return deleteResponse;  
   }
 
 
 
   static Future<Map<String, String>> _queryFromSalesforce(String objAPIName, List<String> fieldList, String whereClause, String orderByClause, int? count) async {
-    Map<String, String> _queryResponse = {};
+    Map<String, String> queryResponse = {};
     if(accessToken == '') await loginToSalesforce();
     Map<String, String> responseData = <String, String>{};
     try{
@@ -336,31 +336,32 @@ class SalesforceUtil{
   }
   
   static Future<Map<String, String>> _login() async{
-    Map<String, String> _loginResponse = {};
+    Map<String, String> loginResponse = {};
     try{
       dynamic resp = await http.post(
         Uri.parse(generateEndpointUrl(opType : 'login')),
         headers: generateHeader(),
         body: generateBody(opType: 'login'),
       );
+      log.d('I am here');
       final Map<String, dynamic> body = json.decode(resp.body);
       if (resp.statusCode == 200) {
         instanceUrl = body['instance_url'];
         accessToken = body['access_token'];
-        _loginResponse['data'] = body.toString();
+        loginResponse['data'] = body.toString();
       } 
       else {
         // Log an error
         print('Response code other than 200 detected : ${resp.body}');
-        _loginResponse['error'] = body.toString();
+        loginResponse['error'] = body.toString();
       }
       // responseMap.add('data') = response.body;
     }
     catch(error){
       print('Error occurred while logging into Salesforce. Error is : $error');
-      _loginResponse['error'] = error.toString();
+      loginResponse['error'] = error.toString();
     }
-    return _loginResponse;
+    return loginResponse;
   }
 
   /////////////////////////////// generate type of methods ///////////////////////////////////
